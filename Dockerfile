@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 COPY . .
 RUN npm ci
+RUN npm ci
 RUN npm run build
 
 FROM node:19-alpine
