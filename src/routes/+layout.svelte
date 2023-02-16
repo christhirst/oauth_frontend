@@ -7,11 +7,11 @@
 
 	export let data: LayoutData;
 	console.log('data');
-	console.log(data.user);
+	console.log(data.locals.user);
 	//console.log($page);
 </script>
 
-<Navbar user={data.user} />
+<Navbar user={data.locals.user} />
 <svelte:head>
 	<title>Website Name{$page.data.title ? ` - ${$page.data.title}` : ''}</title>
 	{#if $page.data.description}

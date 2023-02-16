@@ -14,9 +14,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const sub = event.cookies.get('sub');
 
 	console.log('event.locals.user');
-	console.log(event.locals.gg);
+	console.log(locals.groups);
+
 	locals.user = sub;
-	const groups = [];
+
 	if (!sub) {
 		console.log(sub);
 		const googleIssuer = await Issuer.discover(OIDC_URL);
@@ -59,10 +60,16 @@ export const handle: Handle = async ({ event, resolve }) => {
 			const params = client.callbackParams(event.request.url);
 
 			const id = params.code;
-			console.log(params);
+			console.log(id);
 			const openidFields = JSON.parse(Buffer.from(id.split('.')[1], 'base64').toString());
 			const sub = openidFields.sub;
-			const groups = openidFields.groups;
+			locals.user = sub;
+			console.log(sub);
+			console.log('+++++');
+			const gro = ['testgroup1, testgroup2'];
+			locals.groups = openidFields.groups;
+			locals.groups = gro;
+			console.log(locals.groups);
 			try {
 				const tokenSet = await client.callback(prot + '://localhost:5173/', params, {
 					state: 'test'

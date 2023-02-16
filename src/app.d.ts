@@ -1,4 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
+
+import type { string } from 'yup';
+
 // for information about these interfaces
 declare global {
 	namespace App {
@@ -10,10 +13,7 @@ declare global {
 				//id: number;
 				name: string;
 			};
-			gg?: {
-				id: number;
-				name: string;
-			};
+			groups?: Array<string>;
 		}
 		// interface Error {}
 		// interface Locals {}
