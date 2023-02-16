@@ -14,6 +14,7 @@ declare global {
 				name: string;
 			};
 			groups?: Array<string>;
+			code?: string;
 		}
 		// interface Error {}
 		// interface Locals {}

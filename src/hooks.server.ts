@@ -12,12 +12,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const { locals, cookies, isDataRequest, url } = event;
 
 	const sub = event.cookies.get('sub');
-
+	const code = event.cookies.get('code');
 	console.log('event.locals.user');
 	console.log(locals.groups);
 
 	locals.user = sub;
-
+	locals.code = code;
 	if (!sub) {
 		console.log(sub);
 		const googleIssuer = await Issuer.discover(OIDC_URL);
@@ -60,6 +60,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			const params = client.callbackParams(event.request.url);
 
 			const id = params.code;
+			event.cookies.set('code', id, { secure: false, httpOnly: false });
 			console.log(id);
 			const openidFields = JSON.parse(Buffer.from(id.split('.')[1], 'base64').toString());
 			const sub = openidFields.sub;
