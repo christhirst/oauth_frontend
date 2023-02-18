@@ -6,7 +6,7 @@ export const GET: RequestHandler = async ({ fetch, locals }) => {
 	const accessToken: string = locals.code;
 	const response = await fetch('http://localhost:8280/oauth/userinfo', {
 		method: 'GET',
-		headers: { Authorization: 'Bearer ' + 'accessToken' }
+		headers: { Authorization: 'Bearer ' + accessToken }
 	});
 
 	if (response.ok) {
