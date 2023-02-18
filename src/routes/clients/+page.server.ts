@@ -5,7 +5,7 @@ import { API_KEY } from '$env/static/private';
 import { invalidateAll } from '$app/navigation';
 
 //console.log('$env/dynamic/private', API_KEY);
-let ee = API_KEY;
+//let ee = API_KEY;
 export const load: PageServerLoad = async ({ fetch, depends, locals }) => {
 	if (!locals.user) {
 		throw redirect(302, '/');
