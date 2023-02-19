@@ -16,6 +16,11 @@
 			href: '/identityproviders'
 		},
 		{
+			title: 'Ldap',
+			href: '/ldap'
+		},
+
+		{
 			title: 'Syncs',
 			href: '/syncs'
 		},

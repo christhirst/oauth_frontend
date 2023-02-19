@@ -13,8 +13,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const sub = event.cookies.get('sub');
 	const code = event.cookies.get('code');
-	console.log('event.locals.user');
-	console.log(locals.groups);
 
 	locals.user = sub;
 	locals.code = code;
