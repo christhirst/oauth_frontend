@@ -14,15 +14,18 @@
 
 <div class="container">
 	<ul>
-		{#each Object.entries(data.ldap) as [key, value]}
-			{#if key === 'groups'}
-				<li>{key}:</li>
-				<ul>
-					{#each value as k}
-						<li>{k}</li>
-					{/each}
-				</ul>
-			{:else}<li>{key}: {value}</li>{/if}
+		{#each Object.entries(data.ldap) as [k, v]}
+			{k}:
+			{#each Object.entries(v) as [key, value]}
+				{#if key === 'groups'}
+					<li>{key}:</li>
+					<ul>
+						{#each value as k}
+							<li>{k}</li>
+						{/each}
+					</ul>
+				{:else}<li>{key}: {value}</li>{/if}
+			{/each}
 		{/each}
 	</ul>
 </div>
