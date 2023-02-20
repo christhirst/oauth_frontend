@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ fetch, depends, locals }) => {
 	//depends('app:clients');
 	if (response.ok) {
 		return {
-			clients: response.json()
+			ldap: response.json()
 		};
 	}
 	const errorJSON = await response.json();

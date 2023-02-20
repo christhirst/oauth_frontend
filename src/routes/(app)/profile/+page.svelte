@@ -2,7 +2,6 @@
 </script>
 
 <script lang="ts">
-	import { array } from 'yup/lib/locale';
 	import type { PageServerLoad } from './$types';
 
 	export let data: PageServerLoad;
