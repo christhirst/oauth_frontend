@@ -7,12 +7,12 @@ export const load: PageServerLoad = async ({ fetch, depends, locals }) => {
 		throw redirect(302, '/');
 	}
 
-	const response = await fetch('/api/ldap');
+	const response = await fetch('/api/sync');
 
 	//depends('app:clients');
 	if (response.ok) {
 		return {
-			ldap: response.json()
+			sync: response.json()
 		};
 	}
 	const errorJSON = await response.json();

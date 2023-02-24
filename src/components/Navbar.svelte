@@ -19,10 +19,13 @@
 			title: 'Ldap',
 			href: '/ldap'
 		},
-
 		{
-			title: 'Syncs',
-			href: '/syncs'
+			title: 'Mappings',
+			href: '/mappings'
+		},
+		{
+			title: 'Sync',
+			href: '/sync'
 		},
 		{
 			title: 'User',
