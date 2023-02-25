@@ -6,8 +6,8 @@ import { resolveBaseUrl } from 'vite';
 export const handle: Handle = async ({ event, resolve }) => {
 	const urls = OIDC_URL;
 	const redirect_uri = event.url.origin;
+	console.log(redirect_uri);
 
-	const prot = PROT;
 	const client_id = CLIENT_NAME;
 	const client_secret = CLIENT_SECRET;
 
@@ -31,7 +31,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		const client = new googleIssuer.Client({
 			client_id: client_id,
 			client_secret: client_secret,
-			redirect_uris: [prot + '://' + redirect_uri],
+			redirect_uris: [redirect_uri],
 			response_types: ['code']
 			// id_token_signed_response_alg (default "RS256")
 			// token_endpoint_auth_method (default "client_secret_basic")
@@ -78,7 +78,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			locals.groups = gro;
 			console.log(locals.groups);
 			try {
-				const tokenSet = await client.callback(prot + '://localhost:5173/', params, {
+				const tokenSet = await client.callback(redirect_uri, params, {
 					state: 'test'
 				});
 			} catch (e) {
