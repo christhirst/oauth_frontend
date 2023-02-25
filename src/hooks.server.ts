@@ -5,16 +5,23 @@ import { resolveBaseUrl } from 'vite';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const urls = OIDC_URL;
+	const redirect_uri = event.url.host;
+
 	const prot = PROT;
 	const client_id = CLIENT_NAME;
 	const client_secret = CLIENT_SECRET;
 
 	const { locals, cookies, isDataRequest, url } = event;
 
-	const sub = event.cookies.get('sub');
+	const sub: string | undefined = event.cookies.get('sub');
 	const code = event.cookies.get('code');
 
-	locals.user = sub;
+	if (sub) {
+		locals.user = { name: sub };
+	} else {
+		locals.user = undefined;
+	}
+
 	locals.code = code;
 	if (!sub) {
 		console.log(sub);
@@ -24,7 +31,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		const client = new googleIssuer.Client({
 			client_id: client_id,
 			client_secret: client_secret,
-			redirect_uris: [prot + '://localhost:5173/'],
+			redirect_uris: [prot + '://' + redirect_uri],
 			response_types: ['code']
 			// id_token_signed_response_alg (default "RS256")
 			// token_endpoint_auth_method (default "client_secret_basic")
@@ -57,7 +64,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 		if (qqq && !sub) {
 			const params = client.callbackParams(event.request.url);
 
-			const id = params.code;
+			const id: string | undefined = params.code ?? '';
+
 			event.cookies.set('code', id, { secure: false, httpOnly: false });
 			console.log(id);
 			const openidFields = JSON.parse(Buffer.from(id.split('.')[1], 'base64').toString());
