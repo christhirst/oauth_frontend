@@ -5,7 +5,7 @@ import { resolveBaseUrl } from 'vite';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const urls = OIDC_URL;
-	const redirect_uri = event.url.host;
+	const redirect_uri = event.url.origin;
 
 	const prot = PROT;
 	const client_id = CLIENT_NAME;
