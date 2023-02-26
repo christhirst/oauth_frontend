@@ -24,10 +24,22 @@ export const load: PageServerLoad = async ({ fetch, depends, locals }) => {
 
 export const actions = {
 	create: async ({ request }) => {
+		type client = {
+			Clientname: string;
+			ClientSecret: string;
+			ApplicationType: string;
+		};
+
+		const ii: client = {
+			Clientname: 'Clientname',
+			ClientSecret: 'ClientSecret',
+			ApplicationType: 'ApplicationType'
+		};
+
 		const formData = await request.formData();
-		const client_name = formData.get('client_name');
-		const client_secret = formData.get('client_secret');
-		const application_type = formData.get('application_type');
+		const client_name = formData.get(ii.Clientname);
+		const client_secret = formData.get(ii.ClientSecret);
+		const application_type = formData.get(ii.ApplicationType);
 		console.log(client_name);
 		const clientSchema = object({
 			client_name: string().required(),

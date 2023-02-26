@@ -1,7 +1,5 @@
 <script lang="ts">
 	export let size = 'medium';
-	export let func: Function;
-	export let clientname: string;
 </script>
 
 <button on:click class:small={size === 'small'} class:medium={size === 'medium'} {...$$restProps}>

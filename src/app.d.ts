@@ -15,6 +15,7 @@ declare global {
 			};
 			groups?: Array<string>;
 			code?: string;
+			ldap?: Map;
 		}
 		// interface Error {}
 		// interface Locals {}

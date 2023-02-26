@@ -5,8 +5,20 @@
 	import Form from '../../components/Form.svelte';
 	import Meta from '../../components/Meta.svelte';
 	import Card from '../../components/Card.svelte';
+	import { string } from 'yup/lib/locale';
 
 	export let data: PageData;
+	type client = {
+		Clientname: string;
+		ClientSecret: string;
+		ApplicationType: string;
+	};
+
+	const ii: client = {
+		Clientname: 'Clientname',
+		ClientSecret: 'Client Secret',
+		ApplicationType: 'Application Type'
+	};
 
 	$: clientsList = data.clients;
 	const filterClients = () => {
@@ -24,7 +36,7 @@
 
 <ul>
 	<div class="clients">
-		<Form />
+		<Form name="Client" typ={ii} />
 	</div>
 
 	<div class="container">

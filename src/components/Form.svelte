@@ -5,36 +5,36 @@
 	import Button from './Button.svelte';
 
 	export let form;
+	export let name;
+	export let typ;
 </script>
 
 <div class="container">
-	<h2>Add Client</h2>
-	{#if form?.success}
-		<p class="success">{form?.status || ''}</p>
-	{:else}
-		<form
-			action="?/create"
-			method="POST"
-			use:enhance={({ form }) => {
-				return async ({ result, update }) => {
-					if (result.type === 'success') {
-						form.reset();
-					}
-					if (result.type === 'invalid') {
-						await applyAction(result);
-					}
-					update;
-				};
-			}}
-		>
+	<h2>Add</h2>
+	<form
+		action="?/create"
+		method="POST"
+		use:enhance={({ form }) => {
+			return async ({ result, update }) => {
+				if (result.type === 'success') {
+					form.reset();
+				}
+				if (result.type === 'invalid') {
+					await applyAction(result);
+				}
+				update;
+			};
+		}}
+	>
+		{#each Object.entries(typ) as [key, value]}
 			<div class="form-group">
-				<label class="col-md-3 control-label" for="client_name">Clientname</label>
+				<label class="col-md-3 control-label" for="client_name">{value}</label>
 				<div class="col-md-9">
 					<input
-						id="client_name"
-						name="client_name"
+						id={key}
+						name={key}
 						type="text"
-						placeholder="Clientname"
+						placeholder={key}
 						class="form-control"
 						value={form?.name || ''}
 						class:error={form?.errors?.name}
@@ -45,54 +45,17 @@
 					<!-- <div class="error">error</div> -->
 				</div>
 			</div>
+		{/each}
+		<div class="form-group">
+			<div class="col-md-12">
+				<Button type="submit">Submit</Button>
 
-			<div class="form-group">
-				<label class="col-md-3 control-label" for="client_secret">Client Secret</label>
-				<div class="col-md-9">
-					<input
-						id="client_secret"
-						name="client_secret"
-						type="text"
-						placeholder="Client Secret"
-						class="form-control"
-						value={form?.email || ''}
-						class:error={form?.errors?.email}
-					/>
-					{#if form?.errors?.email}
-						<p class="red">{form?.errors?.email}</p>
-					{/if}
-				</div>
+				{#if form?.error}
+					<Alert message={form?.message} />
+				{/if}
 			</div>
-
-			<div class="form-group">
-				<label class="col-md-3 control-label" for="application_type">Application Type</label>
-				<div class="col-md-9">
-					<input
-						class="form-control"
-						id="application_type"
-						name="application_type"
-						placeholder="Application Type"
-						rows="5"
-						value={form?.message || ''}
-						class:error={form?.errors?.message}
-					/>
-					{#if form?.errors?.message}
-						<p class="red">{form?.errors?.message}</p>
-					{/if}
-				</div>
-			</div>
-
-			<div class="form-group">
-				<div class="col-md-12">
-					<Button type="submit">Submit</Button>
-
-					{#if form?.error}
-						<Alert message={form?.message} />
-					{/if}
-				</div>
-			</div>
-		</form>
-	{/if}
+		</div>
+	</form>
 </div>
 
 <style>
