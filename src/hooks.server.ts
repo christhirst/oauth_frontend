@@ -1,9 +1,10 @@
 import { Issuer, generators } from 'openid-client';
 import { redirect, type Handle, type HandleFetch, type HandleServerError } from '@sveltejs/kit';
-import { OIDC_URL, PROT, CLIENT_NAME, CLIENT_SECRET } from '$env/static/private';
+import { OIDC_URL, CLIENT_NAME, CLIENT_SECRET } from '$env/static/private';
 import { resolveBaseUrl } from 'vite';
 
 export const handle: Handle = async ({ event, resolve }) => {
+	console.log(OIDC_URL);
 	const urls = OIDC_URL;
 	const redirect_uri = event.url.origin;
 	console.log(redirect_uri);
