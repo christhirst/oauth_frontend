@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ fetch, depends, locals }) => {
 };
 
 export const actions = {
-	create: async ({ request }) => {
+	create: async ({ request, fetch }) => {
 		type client = {
 			Clientname: string;
 			ClientSecret: string;
@@ -41,6 +41,7 @@ export const actions = {
 		const client_secret = formData.get(ii.ClientSecret);
 		const application_type = formData.get(ii.ApplicationType);
 		console.log(client_name);
+
 		const clientSchema = object({
 			client_name: string().required(),
 			client_secret: string().required(),

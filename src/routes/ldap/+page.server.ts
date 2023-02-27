@@ -1,4 +1,5 @@
-import { invalidate } from '$app/navigation';
+import { object, string, number, date, InferType } from 'yup';
+import { invalidateAll } from '$app/navigation';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -40,34 +41,87 @@ export const load: PageServerLoad = async ({ fetch, depends, locals }) => {
 };
 
 export const actions = {
-	create: async ({ request }) => {
+	create: async ({ request, fetch }) => {
 		const formData = await request.formData();
-		const client_name = formData.get('client_name');
-		const client_secret = formData.get('client_secret');
-		const application_type = formData.get('application_type');
 
-		const clientSchema = object({
-			client_name: string().required(),
-			client_secret: string().required(),
-			application_type: string().required()
+		type ldap = {
+			Hostname: string;
+			Port: number;
+			Bindusername: string;
+			Bindpassword: string;
+			Starttls: string;
+			Filter: string;
+			Basedn: string;
+			Uid: string;
+			SyncMode: string;
+			Mapping: string;
+			Frequence: string;
+			SCIM: string;
+			SPN: string;
+			IPRange: string;
+		};
+
+		const ii: ldap = {
+			Hostname: 'Hostname',
+			Port: 'Port',
+			Bindusername: 'Bindusername',
+			Bindpassword: 'Bindpassword',
+			Starttls: 'Starttls',
+			Filter: 'Filter',
+			Basedn: 'Basedn',
+			Uid: 'Uid',
+			SyncMode: 'SyncMode',
+			Mapping: 'Mapping',
+			Frequence: 'Frequence',
+			SCIM: 'SCIM',
+			SPN: 'SPN',
+			IPRange: 'IPRange'
+		};
+
+		const Hostname = formData.get(ii.Hostname);
+		const Port: number = formData.get(ii.Port);
+		const Bindusername = formData.get(ii.Bindusername);
+		const Bindpassword = formData.get(ii.Bindpassword);
+		const Starttls = formData.get(ii.Starttls);
+		const Filter = formData.get(ii.Filter);
+		const Basedn = formData.get(ii.Basedn);
+		const Uid = formData.get(ii.Uid);
+		const SyncMode = formData.get(ii.SyncMode);
+		const Mapping = formData.get(ii.Mapping);
+		const Frequence = formData.get(ii.Frequence);
+		const SCIM = formData.get(ii.SCIM);
+		const SPN = formData.get(ii.SPN);
+		const IPRange = formData.get(ii.IPRange);
+
+		const ldapSchema = object({
+			Hostname: string().required(),
+			Port: number().required(),
+			Bindusername: string().required()
 		});
 
 		try {
-			const result = await clientSchema.validate(
-				{ client_name, client_secret, application_type },
+			const result = await ldapSchema.validate(
+				{ Hostname, Port, Bindusername },
 				{ abortEarly: false }
 			);
 			console.log({ result });
 
-			const clientLink = `http://localhost:8280/oauth/clients`;
+			const clientLink = `http://localhost:8180/api/ldap/atesssswwwwwstsss`;
+
+			const headers = new Headers({
+				'content-type': 'application/json'
+			});
+
+			const data = {
+				Hostname: Hostname,
+				Port: Number(Port), // your integer value
+				Bindusername: Bindusername
+			};
 
 			const res = await fetch(clientLink, {
 				method: 'POST',
-				body: JSON.stringify({
-					client_name: client_name,
-					client_secret: client_secret,
-					application_type: application_type
-				})
+				headers: headers,
+				body: JSON.stringify(data)
 			});
 
 			if (res.status != 200) {
@@ -92,13 +146,13 @@ export const actions = {
 			};
 		}
 	},
-	delete: async ({ request }) => {
+	delete: async ({ request, fetch }) => {
 		const formData = await request.formData();
-		const id = formData.get('id');
+		const ldapname = formData.get('id');
 		console.log('+++++');
-		console.log(id);
+		console.log(ldapname);
 
-		await fetch(`http://localhost:8280/oauth/ldap/${id}`, {
+		await fetch(`http://localhost:8180/api/ldap/${ldapname}`, {
 			method: 'DELETE',
 			body: JSON.stringify({
 				foo: ''

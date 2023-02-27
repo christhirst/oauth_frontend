@@ -19,7 +19,7 @@ jobs:
           API_KEY: test
         with:
           image: raynkami/uxti.ldap.front
-          tags: ${{github.ref_name}}-2
+          tags: ${{github.ref_name}}-3
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
