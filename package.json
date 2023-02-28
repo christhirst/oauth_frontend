@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build --base=/app/.",
+		"build": "NODE_TLS_REJECT_UNAUTHORIZED=0 vite build --base=/app/.",
 		"start": "node ./build/index.js",
 		"preview": "vite preview",
 		"test": "playwright test",
