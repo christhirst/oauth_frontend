@@ -4,9 +4,11 @@ import { OIDC_URL, CLIENT_NAME, CLIENT_SECRET } from '$env/static/private';
 import { resolveBaseUrl } from 'vite';
 
 export const handle: Handle = async ({ event, resolve }) => {
+	console.log('OIDC_URL:');
 	console.log(OIDC_URL);
 	const urls = OIDC_URL;
 	const redirect_uri = event.url.origin;
+	console.log('redirect_uri:');
 	console.log(redirect_uri);
 
 	const client_id = CLIENT_NAME;
@@ -25,6 +27,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	locals.code = code;
 	if (!sub) {
+		console.log('sub:');
 		console.log(sub);
 		const googleIssuer = await Issuer.discover(OIDC_URL);
 		//console.log('Discovered issuer %s %O', googleIssuer.issuer, googleIssuer.metadata);
