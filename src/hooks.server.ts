@@ -17,6 +17,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const { locals, cookies, isDataRequest, url } = event;
 
 	const sub: string | undefined = event.cookies.get('sub');
+
 	const code = event.cookies.get('code');
 
 	if (sub) {
@@ -29,6 +30,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (!sub) {
 		console.log('sub:');
 		console.log(sub);
+		console.log('code:');
+		console.log(code);
+
 		const googleIssuer = await Issuer.discover(OIDC_URL);
 		//console.log('Discovered issuer %s %O', googleIssuer.issuer, googleIssuer.metadata);
 

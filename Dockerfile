@@ -15,5 +15,6 @@ COPY --from=builder /app/build .
 COPY --from=builder /app/node_modules ./node_modules
 RUN export NODE_TLS_REJECT_UNAUTHORIZED=0
 
-EXPOSE 5173
+ENV HOST=0.0.0.0
+EXPOSE 3000
 CMD ["node", "index.js"]
