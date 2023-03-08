@@ -59,28 +59,35 @@ export const handle: Handle = async ({ event, resolve }) => {
 			code_challenge,
 			code_challenge_method: 'S256'
 		});
-		const re = /https/gi;
-		const newurl = urlRedirect.replace(re, 'http');
 
 		const { locals, cookies, isDataRequest, url } = event;
 
 		//&& event.route.id?.startsWith('/(app)')
 		if (!qqq) {
-			event.cookies.set('some', 'value', { secure: false, httpOnly: false });
-			throw redirect(302, newurl + '&state=test');
+			if (urlRedirect.startsWith('https://localhost')) {
+				const re = /https/gi;
+				const newurl = urlRedirect.replace(re, 'http');
+				console.log('Redirect: ' + newurl);
+				event.cookies.set('some', 'value', { secure: false, httpOnly: false });
+				throw redirect(302, newurl + '&state=test');
+			} else {
+				console.log('Redirect: ' + urlRedirect);
+				event.cookies.set('some', 'value', { secure: false, httpOnly: false });
+				throw redirect(302, urlRedirect + '&state=test');
+			}
 		}
 		if (qqq && !sub) {
+			console.log('+++++');
 			const params = client.callbackParams(event.request.url);
-
+			console.log(event.request.url);
 			const id: string | undefined = params.code ?? '';
-
 			event.cookies.set('code', id, { secure: false, httpOnly: false });
 			console.log(id);
 			const openidFields = JSON.parse(Buffer.from(id.split('.')[1], 'base64').toString());
 			const sub = openidFields.sub;
 			locals.user = sub;
 			console.log(sub);
-			console.log('+++++');
+
 			const gro = ['testgroup1, testgroup2'];
 			locals.groups = openidFields.groups;
 			locals.groups = gro;
