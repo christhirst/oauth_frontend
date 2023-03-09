@@ -83,6 +83,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 			const id: string | undefined = params.code ?? '';
 			event.cookies.set('code', id, { secure: false, httpOnly: false });
 			console.log(id);
+			console.log('!!!!!!');
+			console.log(params);
 			const openidFields = JSON.parse(Buffer.from(id.split('.')[1], 'base64').toString());
 			const sub = openidFields.sub;
 			locals.user = sub;
