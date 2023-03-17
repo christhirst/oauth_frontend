@@ -6,7 +6,7 @@ import { resolveBaseUrl } from 'vite';
 export const handle: Handle = async ({ event, resolve }) => {
 	console.log('OIDC_URL:');
 	console.log(OIDC_URL);
-	const urls = OIDC_URL;
+	const urls = OIDC_URL + '/oauth/.well-known/openid-configuration';
 	const redirect_uri = event.url.origin;
 	console.log('redirect_uri:');
 	console.log(redirect_uri);
