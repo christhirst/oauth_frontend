@@ -1,11 +1,11 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { OIDC_URL } from '$env/static/private';
+import { API_URL } from '$env/static/private';
 
-const url = OIDC_URL + '/oauth/clients';
+const url = API_URL + '/api';
 
 export const GET: RequestHandler = async ({ fetch, locals }) => {
-	const response = await fetch(url + '/api/ldap');
+	const response = await fetch(url + '/ldap');
 
 	if (response.ok) {
 		const resJSON = await response.json();

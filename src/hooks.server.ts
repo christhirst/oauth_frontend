@@ -1,6 +1,6 @@
 import { Issuer, generators } from 'openid-client';
 import { redirect, type Handle, type HandleFetch, type HandleServerError } from '@sveltejs/kit';
-import { OIDC_URL, CLIENT_NAME, CLIENT_SECRET } from '$env/static/private';
+import { OIDC_URL, OIDC_Port, CLIENT_NAME, CLIENT_SECRET } from '$env/static/private';
 import { resolveBaseUrl } from 'vite';
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -33,7 +33,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		console.log('code:');
 		console.log(code);
 
-		const googleIssuer = await Issuer.discover(OIDC_URL);
+		const googleIssuer = await Issuer.discover(urls);
 		//console.log('Discovered issuer %s %O', googleIssuer.issuer, googleIssuer.metadata);
 
 		const client = new googleIssuer.Client({

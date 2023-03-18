@@ -2,6 +2,8 @@ import { object, string, number, date, InferType } from 'yup';
 import { invalidateAll } from '$app/navigation';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { OIDC_URL } from '$env/static/private';
+const url = OIDC_URL + '/oauth';
 
 export const load: PageServerLoad = async ({ fetch, depends, locals }) => {
 	if (!locals.user) {
@@ -36,6 +38,8 @@ export const load: PageServerLoad = async ({ fetch, depends, locals }) => {
 			ldap: data
 		};
 	}
+	console.log('####');
+	console.log(response.body);
 	const errorJSON = await response.json();
 	//throw error(response.status, errorJSON.message);
 };
@@ -106,7 +110,7 @@ export const actions = {
 			);
 			console.log({ result });
 
-			const clientLink = `http://localhost:8180/api/ldap/atesssswwwwwstsss`;
+			const clientLink = url + `/api/ldap/atesssswwwwwstsss`;
 
 			const headers = new Headers({
 				'content-type': 'application/json'
@@ -152,7 +156,7 @@ export const actions = {
 		console.log('+++++');
 		console.log(ldapname);
 
-		await fetch(`http://localhost:8180/api/ldap/${ldapname}`, {
+		await fetch(url + `/api/ldap/${ldapname}`, {
 			method: 'DELETE',
 			body: JSON.stringify({
 				foo: ''
