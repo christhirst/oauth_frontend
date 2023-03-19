@@ -89,18 +89,24 @@ export const handle: Handle = async ({ event, resolve }) => {
 			const sub = openidFields.sub;
 			locals.user = sub;
 			console.log(sub);
-
-			const gro = ['testgroup1, testgroup2'];
+			const gro = openidFields;
+			//const gro = ['testgroup1, testgroup2'];
 			locals.groups = openidFields.groups;
 			locals.groups = gro;
 			console.log(locals.groups);
+			let userinfo;
+			console.log('++++++');
 			try {
 				const tokenSet = await client.callback(redirect_uri, params, {
 					state: 'test'
 				});
+				console.log('----------------');
+				console.log(tokenSet);
+				//const userinfo = await console.log(client.userinfo('fffff'));
 			} catch (e) {
 				console.log(e);
 			}
+			//console.log(userinfo);
 			/*
 		console.log('####!!###');
 		console.log(tokenSet.access_token);
