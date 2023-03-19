@@ -11,10 +11,10 @@
 			title: 'Clients',
 			href: '/clients'
 		},
-		{
+		/* {
 			title: 'Identityproviders',
 			href: '/identityproviders'
-		},
+		}, */
 		{
 			title: 'Ldap',
 			href: '/ldap'
@@ -23,18 +23,18 @@
 			title: 'Mappings',
 			href: '/mappings'
 		},
-		{
+		/* {
 			title: 'Sync',
 			href: '/sync'
-		},
-		{
+		}, */
+		/* 	{
 			title: 'User',
 			href: '/user'
-		},
-		{
+		}, */
+		/* 	{
 			title: 'Groups',
 			href: '/groups'
-		},
+		}, */
 		{
 			title: 'Profile',
 			href: '/profile'
