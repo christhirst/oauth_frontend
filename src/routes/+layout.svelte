@@ -7,11 +7,13 @@
 
 	export let data: LayoutData;
 	console.log('data');
-	console.log(data.locals.user);
-	//console.log($page);
+	console.log(data.locals.user?.name);
+	//let userRead;
+	$: user = data.locals.user?.name || 'Unlogged';
+	console.log(user);
 </script>
 
-<Navbar user={data.locals.user} />
+<Navbar {user} />
 <svelte:head>
 	<title>Website Name{$page.data.title ? ` - ${$page.data.title}` : ''}</title>
 	{#if $page.data.description}
@@ -19,18 +21,20 @@
 	{/if}
 </svelte:head>
 
-<!-- {#if data.user}
+{#if user}
 	<button
 		on:click={async () => {
-			const response = await fetch('/api/logout', { method: 'POST' });
-			if (response.ok) {
-				invalidateAll();
-			}
+			let myArray = ['siteTheme', 'sub', 'code', 'code_challenge'];
+
+			myArray.forEach((element) => {
+				document.cookie = element + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			});
+			invalidateAll();
 		}}
 	>
 		Logout
 	</button>
-{/if} -->
+{/if}
 
 <slot />
 <Footer />

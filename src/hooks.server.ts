@@ -80,7 +80,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			console.log('+++++');
 			const params = client.callbackParams(event.request.url);
 			console.log(event.request.url);
-			const id: string | undefined = params.code ?? '';
+			const id: string = params.code ?? '';
 			event.cookies.set('code', id, { secure: false, httpOnly: false });
 			console.log(id);
 			console.log('!!!!!!');

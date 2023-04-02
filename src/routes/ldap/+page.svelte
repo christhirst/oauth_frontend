@@ -4,7 +4,7 @@
 	import Button from '../../components/Button.svelte';
 	import Form from '../../components/Form.svelte';
 
-	interface ldaps {
+	/* interface ldaps {
 		Hostname: string;
 		Port: number;
 		Bindusername: string;
@@ -19,7 +19,7 @@
 		SCIM: boolean;
 		SPN: string;
 		IPRange: string;
-	}
+	} */
 
 	type ldap = {
 		Hostname: string;
@@ -59,7 +59,7 @@
 		[key: string]: ldap;
 	};
 	export let data: PageServerLoad;
-	const ee: typeMap = data.ldap;
+	let ldapList: typeMap;
 	$: ldapList = data.ldap;
 </script>
 
@@ -70,7 +70,7 @@
 
 	<div class="container">
 		<ul>
-			{#each Object.entries(ee) as [k, v]}
+			{#each Object.entries(ldapList) as [k, v]}
 				<Card>
 					{k}:
 					{#each Object.entries(v) as [key, value]}
