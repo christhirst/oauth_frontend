@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
 	import { page } from '$app/stores';
-	import { invalidateAll } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import Navbar from '../components/Navbar.svelte';
 	import Footer from '../components/Footer.svelte';
 
@@ -10,7 +10,6 @@
 	console.log(data.locals.user?.name);
 	//let userRead;
 	$: user = data.locals.user?.name || 'Unlogged';
-	console.log(user);
 </script>
 
 <Navbar {user} />
