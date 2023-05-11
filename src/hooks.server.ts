@@ -102,8 +102,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 				});
 				console.log('----------------');
 				console.log(tokenSet);
-				//const userinfo = await console.log(client.userinfo('fffff'));
+				const userinfo = await console.log(client.userinfo(tokenSet.access_token));
 			} catch (e) {
+				console.log('!zzzz!');
 				console.log(e);
 			}
 			//console.log(userinfo);
@@ -116,7 +117,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			event.cookies.delete('some');
 		}
 	}
-	//const userinfo = await client.userinfo(access_token);
+	//const userinfo = await client.userinfo(tokenSet);
 	//console.log('userinfo %j', userinfo);
 
 	const access = event.cookies.get('access') == 'true';
