@@ -1,12 +1,16 @@
 import { Issuer, generators } from 'openid-client';
+import type { OpenIDCallbackChecks } from 'openid-client';
+
 import { redirect, type Handle, type HandleFetch, type HandleServerError } from '@sveltejs/kit';
 import { OIDC_URL, OIDC_Port, CLIENT_NAME, CLIENT_SECRET } from '$env/static/private';
 import { resolveBaseUrl } from 'vite';
+import { string } from 'yup';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	console.log('OIDC_URL:');
 	console.log(OIDC_URL);
 	const urls = OIDC_URL + '/oauth/.well-known/openid-configuration';
+	console.log(urls);
 	const redirect_uri = event.url.origin;
 	console.log('redirect_uri:');
 	console.log(redirect_uri);
@@ -55,11 +59,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.cookies.set('code_challenge', code_challenge, { secure: false, httpOnly: false });
 		const urlRedirect = client.authorizationUrl({
 			scope: 'openid email profile',
-			resource: 'https://my.api.example.com/resource/32178',
+			//resource: 'https://my.api.example.com/resource/32178',
 			code_challenge,
 			code_challenge_method: 'S256'
 		});
-
+		console.log(urlRedirect);
+		console.log('88888888');
 		const { locals, cookies, isDataRequest, url } = event;
 
 		//&& event.route.id?.startsWith('/(app)')
@@ -77,9 +82,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 			}
 		}
 		if (qqq && !sub) {
-			console.log('+++++');
-			const params = client.callbackParams(event.request.url);
+			console.log('§§§§§§§');
 			console.log(event.request.url);
+			const params = client.callbackParams(event.request.url);
+			console.log(params);
 			const id: string = params.code ?? '';
 			event.cookies.set('code', id, { secure: false, httpOnly: false });
 			console.log(id);
@@ -95,11 +101,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 			locals.groups = gro;
 			console.log(locals.groups);
 			let userinfo;
-			console.log('++++++');
+			console.log('+++&+++');
+			console.log(redirect_uri + '/');
+			console.log(params.c);
+			console.log(code_verifier);
+			const checks: OpenIDCallbackChecks = { state: 'test', nonce: 'code' };
+
 			try {
-				const tokenSet = await client.callback(redirect_uri, params, {
-					state: 'test'
-				});
+				const tokenSet = await client.callback(redirect_uri, params, checks, { code_verifier });
 				console.log('----------------');
 				console.log(tokenSet);
 				const userinfo = await console.log(client.userinfo(tokenSet.access_token));
