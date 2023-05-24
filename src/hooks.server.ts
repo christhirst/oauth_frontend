@@ -2,26 +2,19 @@ import { Issuer, generators } from 'openid-client';
 import type { OpenIDCallbackChecks } from 'openid-client';
 
 import { redirect, type Handle, type HandleFetch, type HandleServerError } from '@sveltejs/kit';
-import { OIDC_URL, OIDC_Port, CLIENT_NAME, CLIENT_SECRET } from '$env/static/private';
+import { OIDC_URL, CLIENT_NAME, CLIENT_SECRET } from '$env/static/private';
 import { resolveBaseUrl } from 'vite';
 import { string } from 'yup';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	console.log('OIDC_URL:');
-	console.log(OIDC_URL);
 	const urls = OIDC_URL + '/oauth/.well-known/openid-configuration';
 	console.log(urls);
 	const redirect_uri = event.url.origin;
-	console.log('redirect_uri:');
-	console.log(redirect_uri);
-
 	const client_id = CLIENT_NAME;
 	const client_secret = CLIENT_SECRET;
 
 	const { locals, cookies, isDataRequest, url } = event;
-
 	const sub: string | undefined = event.cookies.get('sub');
-
 	const code = event.cookies.get('code');
 
 	if (sub) {
@@ -32,14 +25,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	locals.code = code;
 	if (!sub) {
-		console.log('sub:');
-		console.log(sub);
-		console.log('code:');
-		console.log(code);
-
 		const googleIssuer = await Issuer.discover(urls);
-		//console.log('Discovered issuer %s %O', googleIssuer.issuer, googleIssuer.metadata);
-
+		console.log('Discovered issuer %s %O', googleIssuer.issuer, googleIssuer.metadata);
 		const client = new googleIssuer.Client({
 			client_id: client_id,
 			client_secret: client_secret,
@@ -63,57 +50,43 @@ export const handle: Handle = async ({ event, resolve }) => {
 			code_challenge,
 			code_challenge_method: 'S256'
 		});
-		console.log(urlRedirect);
-		console.log('88888888');
-		const { locals, cookies, isDataRequest, url } = event;
 
-		//&& event.route.id?.startsWith('/(app)')
+		const { locals, cookies, isDataRequest, url } = event;
 		if (!qqq) {
 			if (urlRedirect.startsWith('https://localhost')) {
 				const re = /https/gi;
 				const newurl = urlRedirect.replace(re, 'http');
-				console.log('Redirect: ' + newurl);
 				event.cookies.set('some', 'value', { secure: false, httpOnly: false });
-				throw redirect(302, newurl + '&state=test');
+				throw redirect(302, newurl + '&state=test2' + '&nonce=code2');
 			} else {
-				console.log('Redirect: ' + urlRedirect);
 				event.cookies.set('some', 'value', { secure: false, httpOnly: false });
-				throw redirect(302, urlRedirect + '&state=test');
+				throw redirect(302, urlRedirect + '&state=test2' + '&nonce=code3');
 			}
 		}
 		if (qqq && !sub) {
-			console.log('§§§§§§§');
-			console.log(event.request.url);
-			const params = client.callbackParams(event.request.url);
+			const params = client.callbackParams(event.request.url);	
+			const id: string = params.code ?? '';		
+			event.cookies.set('code', id, { secure: false, httpOnly: false });	
+			//const openidFields = JSON.parse(Buffer.from(id, 'base64').toString());
 			console.log(params);
-			const id: string = params.code ?? '';
-			event.cookies.set('code', id, { secure: false, httpOnly: false });
-			console.log(id);
-			console.log('!!!!!!');
-			console.log(params);
-			const openidFields = JSON.parse(Buffer.from(id.split('.')[1], 'base64').toString());
-			const sub = openidFields.sub;
+			//const sub = openidFields.sub;
 			locals.user = sub;
 			console.log(sub);
-			const gro = openidFields;
+			//const gro = openidFields;
 			//const gro = ['testgroup1, testgroup2'];
-			locals.groups = openidFields.groups;
-			locals.groups = gro;
-			console.log(locals.groups);
+			//locals.groups = openidFields.groups;
+			//locals.groups = gro;
 			let userinfo;
-			console.log('+++&+++');
-			console.log(redirect_uri + '/');
-			console.log(params.c);
-			console.log(code_verifier);
-			const checks: OpenIDCallbackChecks = { state: 'test', nonce: 'code' };
+			const checks: OpenIDCallbackChecks = { state: 'test2', nonce: 'code3' };
 
 			try {
 				const tokenSet = await client.callback(redirect_uri, params, checks, { code_verifier });
 				console.log('----------------');
 				console.log(tokenSet);
+				console.log(tokenSet.id_token);
+
 				const userinfo = await console.log(client.userinfo(tokenSet.access_token));
 			} catch (e) {
-				console.log('!zzzz!');
 				console.log(e);
 			}
 			//console.log(userinfo);
