@@ -5,7 +5,9 @@
 	import type { PageServerLoad } from './$types';
 
 	export let data: PageServerLoad;
-	const profilDAta = JSON.stringify(data.openidFields);
+	const profilDAta = JSON.stringify(data);
+	console.log("üüüüü")
+	console.log(data)
 
 	const items = Object.entries(data.openidFields).map(([key, value]) => {
 		return Object.assign(value, { id: key });

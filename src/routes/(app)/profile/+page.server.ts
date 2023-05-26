@@ -5,7 +5,7 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 		throw redirect(302, '/');
 	} */
 
-	const response = await fetch('/api/userinfo');
+	//const response = await fetch('/api/userinfo');
 	//depends('app:clients');
 	/* if (response.ok) {
 		return {
@@ -15,8 +15,9 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 	/* const errorJSON = await response.json();
 	throw error(response.status, errorJSON.message); */
 
-	const id = locals.code;
-	//console.log(locals);
+	const id = locals.openidFields;
+	console.log(locals);
+	console.log("sssss");
 	const openidFields = JSON.parse(Buffer.from(id.split('.')[1], 'base64').toString());
 	return {
 		openidFields

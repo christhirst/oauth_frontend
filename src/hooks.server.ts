@@ -69,13 +69,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 			event.cookies.set('code', id, { secure: false, httpOnly: false });	
 			//const openidFields = JSON.parse(Buffer.from(id, 'base64').toString());
 			console.log(params);
-			//const sub = openidFields.sub;
-			locals.user = sub;
-			console.log(sub);
-			//const gro = openidFields;
-			//const gro = ['testgroup1, testgroup2'];
-			//locals.groups = openidFields.groups;
-			//locals.groups = gro;
 			let userinfo;
 			const checks: OpenIDCallbackChecks = { state: 'test2', nonce: 'code3' };
 
@@ -83,9 +76,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 				const tokenSet = await client.callback(redirect_uri, params, checks, { code_verifier });
 				console.log('----------------');
 				console.log(tokenSet);
-				console.log(tokenSet.id_token);
-
-				const userinfo = await console.log(client.userinfo(tokenSet.access_token));
+				//const openidFields = JSON.parse(Buffer.from(tokenSet.id_token, 'base64').toString());
+				console.log(tokenSet.claims().sub);
+				console.log(tokenSet.claims().groups);
+				console.log(JSON.stringify(tokenSet.claims())); 
+				const openidFields = JSON.stringify(tokenSet.claims())
+				locals.user = tokenSet.claims().sub;
+				locals.openidFields = openidFields;
+			console.log(sub);
+				//const userinfo = await console.log(client.userinfo(tokenSet.access_token));
 			} catch (e) {
 				console.log(e);
 			}
@@ -95,7 +94,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		console.log(tokenSet.access_token);
 		console.log('received and validated tokens %j', tokenSet);
 		console.log('validated ID Token claims %j', tokenSet.claims()); */
-			event.cookies.set('sub', sub, { secure: false, httpOnly: false });
+			event.cookies.set('sub', locals.user, { secure: false, httpOnly: false });
 			event.cookies.delete('some');
 		}
 	}
