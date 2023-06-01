@@ -16,9 +16,10 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 	throw error(response.status, errorJSON.message); */
 
 	const id = locals.openidFields;
-	console.log(locals);
+	console.log(Buffer.from(locals["code"].split('.')[1], 'base64').toString());
 	console.log("sssss");
-	const openidFields = JSON.parse(Buffer.from(id.split('.')[1], 'base64').toString());
+	console.log(id);
+	const openidFields = JSON.parse(Buffer.from(locals["code"].split('.')[1], 'base64').toString());
 	return {
 		openidFields
 	};

@@ -66,7 +66,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		if (qqq && !sub) {
 			const params = client.callbackParams(event.request.url);	
 			const id: string = params.code ?? '';		
-			event.cookies.set('code', id, { secure: false, httpOnly: false });	
+			
 			//const openidFields = JSON.parse(Buffer.from(id, 'base64').toString());
 			console.log(params);
 			let userinfo;
@@ -82,7 +82,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 				console.log(JSON.stringify(tokenSet.claims())); 
 				const openidFields = JSON.stringify(tokenSet.claims())
 				locals.user = tokenSet.claims().sub;
-				locals.openidFields = openidFields;
+				locals.openidFields = tokenSet.id_token;
+				event.cookies.set('code', tokenSet.id_token, { secure: false, httpOnly: false });	
 			console.log(sub);
 				//const userinfo = await console.log(client.userinfo(tokenSet.access_token));
 			} catch (e) {

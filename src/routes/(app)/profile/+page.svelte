@@ -5,13 +5,14 @@
 	import type { PageServerLoad } from './$types';
 
 	export let data: PageServerLoad;
-	const profilDAta = JSON.stringify(data);
 	console.log("üüüüü")
 	console.log(data)
+	const profilDAta = JSON.stringify(data);
+	console.log(data.openidFields)
 
-	const items = Object.entries(data.openidFields).map(([key, value]) => {
+	/* const items = Object.entries(data.openidFields).map(([key, value]) => {
 		return Object.assign(value, { id: key });
-	});
+	}); */
 	//function classSwap
 </script>
 
