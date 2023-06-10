@@ -85,7 +85,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 				locals.openidFields = tokenSet.id_token;
 				event.cookies.set('code', tokenSet.id_token, { secure: false, httpOnly: false });	
 			console.log(sub);
-				//const userinfo = await console.log(client.userinfo(tokenSet.access_token));
+				const userinfo = await console.log(client.userinfo(tokenSet));
+				console.log(userinfo);
 			} catch (e) {
 				console.log(e);
 			}
