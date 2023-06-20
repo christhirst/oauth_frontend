@@ -1,5 +1,5 @@
 import { Issuer, generators } from 'openid-client';
-import type { CallbackExtras, OpenIDCallbackChecks } from 'openid-client';
+import type { OpenIDCallbackChecks } from 'openid-client';
 
 import { redirect, type Handle, type HandleFetch, type HandleServerError } from '@sveltejs/kit';
 import { OIDC_URL, CLIENT_NAME, CLIENT_SECRET } from '$env/static/private';
@@ -13,7 +13,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const client_id = CLIENT_NAME;
 	const client_secret = CLIENT_SECRET;
 
-	const { locals } = event;
+	const { locals, cookies, isDataRequest, url } = event;
 	const sub: string | undefined = event.cookies.get('sub');
 	const code = event.cookies.get('code');
 
@@ -39,7 +39,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 		const code_verifier = generators.codeVerifier();
 		// store the code_verifier in your framework's session mechanism, if it is a cookie based solution
 		// it should be httpOnly (not readable by javascript) and encrypted.
-		
+
+		const qsqq = event.cookies.get('code_challenge');
 
 		const code_challenge = generators.codeChallenge(code_verifier);
 		event.cookies.set('code_challenge', code_challenge, { secure: false, httpOnly: false });
@@ -72,27 +73,19 @@ export const handle: Handle = async ({ event, resolve }) => {
 			const checks: OpenIDCallbackChecks = { state: 'test2', nonce: 'code3' };
 
 			try {
-				const tokenSet = await client.callback(redirect_uri, params, {
-					code_verifier: code_verifier
-				} as OpenIDCallbackChecks);
-
-
-
-
+				const tokenSet = await client.callback(redirect_uri, params, checks, { code_verifier });
 				console.log('----------------');
 				console.log(tokenSet);
-				const decodedToken = Buffer.from(tokenSet.id_token || '', 'base64').toString();
-				const openidFields = JSON.parse(decodedToken);
+				//const openidFields = JSON.parse(Buffer.from(tokenSet.id_token, 'base64').toString());
 				console.log(tokenSet.claims().sub);
 				console.log(tokenSet.claims().groups);
 				console.log(JSON.stringify(tokenSet.claims())); 
-				const openidFieldsqqW = JSON.stringify(tokenSet.claims())
+				const openidFields = JSON.stringify(tokenSet.claims())
 				locals.user = tokenSet.claims().sub;
 				locals.openidFields = tokenSet.id_token;
 				event.cookies.set('code', tokenSet.id_token, { secure: false, httpOnly: false });	
-				console.log(sub);
-				const userinfo = await console.log(client.userinfo(tokenSet));
-				console.log(userinfo);
+			console.log(sub);
+				//const userinfo = await console.log(client.userinfo(tokenSet.access_token));
 			} catch (e) {
 				console.log(e);
 			}
