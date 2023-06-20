@@ -84,7 +84,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 				locals.user = tokenSet.claims().sub;
 				locals.openidFields = tokenSet.id_token;
 				event.cookies.set('code', tokenSet.id_token, { secure: false, httpOnly: false });	
+<<<<<<< HEAD
 			console.log(sub);
+=======
+				console.log(sub);
+>>>>>>> 62ba096 (userinfo started)
 				const userinfo = await console.log(client.userinfo(tokenSet));
 				console.log(userinfo);
 			} catch (e) {
