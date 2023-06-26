@@ -12,7 +12,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const redirect_uri = event.url.origin;
 	const client_id = CLIENT_NAME;
 	const client_secret = CLIENT_SECRET;
-
+	console.log(client_secret);
 	const { locals, cookies, isDataRequest, url } = event;
 	const sub: string | undefined = event.cookies.get('sub');
 	const code = event.cookies.get('code');
