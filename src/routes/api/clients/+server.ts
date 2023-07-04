@@ -3,7 +3,7 @@ import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { OIDC_URL } from '$env/static/private';
 
-const url = OIDC_URL + '/oauth/clients';
+const url = OIDC_URL + '/api/client';
 export const GET: RequestHandler = async ({ fetch, locals }) => {
 	const response = await fetch(url);
 

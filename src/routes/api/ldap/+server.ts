@@ -1,12 +1,12 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { API_URL } from '$env/static/private';
 
-const url = API_URL + '/api';
+import { OIDC_URL } from '$env/static/private';
 
-export const GET: RequestHandler = async ({ fetch, locals }) => {
-	const response = await fetch(url + '/ldap');
+const url = OIDC_URL + '/api/ldap';
 
+export const GET: RequestHandler = async ({ fetch }) => {
+	const response = await fetch(url );
 	if (response.ok) {
 		const resJSON = await response.json();
 		console.log(resJSON);
@@ -21,7 +21,7 @@ export const POST: RequestHandler = async ({ fetch, request, locals, params }) =
 	console.log(params);
 	const form = await request.formData();
 
-	const response = await fetch(url + `/api/ldap/${params}`, {
+	const response = await fetch(url + `/api/${params}`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'applicaton/json' },
 		body: JSON.stringify({})
@@ -30,7 +30,7 @@ export const POST: RequestHandler = async ({ fetch, request, locals, params }) =
 };
 
 export const DELETE: RequestHandler = async ({ fetch, locals, params }) => {
-	const response = await fetch(url + `/api/ldap/${params}`);
+	const response = await fetch(url + `/api/${params}`);
 
 	if (response.ok) {
 		const resJSON = await response.json();
