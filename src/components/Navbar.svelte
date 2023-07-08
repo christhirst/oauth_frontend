@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	export let user: string;
+
 	console.log('iiii');
 	console.log(user);
 	const navs = [

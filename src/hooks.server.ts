@@ -1,10 +1,8 @@
 import { Issuer, generators } from 'openid-client';
 import type { OpenIDCallbackChecks } from 'openid-client';
 
-import { redirect, type Handle, type HandleFetch, type HandleServerError } from '@sveltejs/kit';
+import { redirect, type Handle } from '@sveltejs/kit';
 import { OIDC_URL, CLIENT_NAME, CLIENT_SECRET } from '$env/static/private';
-import { resolveBaseUrl } from 'vite';
-import { string } from 'yup';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const urls = OIDC_URL + '/oauth/.well-known/openid-configuration';
@@ -13,7 +11,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const client_id = CLIENT_NAME;
 	const client_secret = CLIENT_SECRET;
 	console.log(client_secret);
-	const { locals, cookies, isDataRequest, url } = event;
+	const { locals } = event;
 	const sub: string | undefined = event.cookies.get('sub');
 	const code = event.cookies.get('code');
 
@@ -32,14 +30,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 			client_secret: client_secret,
 			redirect_uris: [redirect_uri],
 			response_types: ['code']
-			// id_token_signed_response_alg (default "RS256")
-			// token_endpoint_auth_method (default "client_secret_basic")
-		}); // => Client
+		}); 
 		const qqq = event.cookies.get('some');
 		const code_verifier = generators.codeVerifier();
-		// store the code_verifier in your framework's session mechanism, if it is a cookie based solution
-		// it should be httpOnly (not readable by javascript) and encrypted.
-
 		const qsqq = event.cookies.get('code_challenge');
 
 		const code_challenge = generators.codeChallenge(code_verifier);
@@ -65,11 +58,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 		if (qqq && !sub) {
 			const params = client.callbackParams(event.request.url);	
-			const id: string = params.code ?? '';		
-			
-			//const openidFields = JSON.parse(Buffer.from(id, 'base64').toString());
 			console.log(params);
-			let userinfo;
+		
 			const checks: OpenIDCallbackChecks = { state: 'test2', nonce: 'code3' };
 
 			try {
@@ -85,36 +75,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 				locals.openidFields = tokenSet.id_token;
 				event.cookies.set('code', tokenSet.id_token, { secure: false, httpOnly: false });	
 			console.log(sub);
-				//const userinfo = await console.log(client.userinfo(tokenSet.access_token));
 			} catch (e) {
 				console.log(e);
 			}
-			//console.log(userinfo);
-			/*
-		console.log('####!!###');
-		console.log(tokenSet.access_token);
-		console.log('received and validated tokens %j', tokenSet);
-		console.log('validated ID Token claims %j', tokenSet.claims()); */
 			event.cookies.set('sub', locals.user, { secure: false, httpOnly: false });
 			event.cookies.delete('some');
 		}
 	}
-	//const userinfo = await client.userinfo(tokenSet);
-	//console.log('userinfo %j', userinfo);
-
 	const access = event.cookies.get('access') == 'true';
-
 	const response = await resolve(event);
-
 	return response;
 };
 
-/* export const handleError: HandleServerError = ({ error, event }) => {
-	//console.log(error, event);
-
-	return {
-		message: 'Unexpected error.',
-		code: 'UNEXPECTED'
-	};
-};
- */
