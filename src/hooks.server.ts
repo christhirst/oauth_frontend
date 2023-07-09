@@ -33,7 +33,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}); 
 		const qqq = event.cookies.get('some');
 		const code_verifier = generators.codeVerifier();
-		const qsqq = event.cookies.get('code_challenge');
+		//const qsqq = event.cookies.get('code_challenge');
 
 		const code_challenge = generators.codeChallenge(code_verifier);
 		event.cookies.set('code_challenge', code_challenge, { secure: false, httpOnly: false });
@@ -44,7 +44,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			code_challenge_method: 'S256'
 		});
 
-		const { locals, cookies, isDataRequest, url } = event;
+		const { locals   } = event;
 		if (!qqq) {
 			if (urlRedirect.startsWith('https://localhost')) {
 				const re = /https/gi;
@@ -70,7 +70,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 				console.log(tokenSet.claims().sub);
 				console.log(tokenSet.claims().groups);
 				console.log(JSON.stringify(tokenSet.claims())); 
-				const openidFields = JSON.stringify(tokenSet.claims())
+				//const openidFields = JSON.stringify(tokenSet.claims())
 				locals.user = tokenSet.claims().sub;
 				locals.openidFields = tokenSet.id_token;
 				event.cookies.set('code', tokenSet.id_token, { secure: false, httpOnly: false });	
@@ -82,7 +82,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			event.cookies.delete('some');
 		}
 	}
-	const access = event.cookies.get('access') == 'true';
+	//const access = event.cookies.get('access') == 'true';
 	const response = await resolve(event);
 	return response;
 };

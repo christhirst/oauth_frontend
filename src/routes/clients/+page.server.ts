@@ -3,9 +3,14 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { API_KEY } from '$env/static/private';
 import { invalidateAll } from '$app/navigation';
-
+import { OIDC_URL } from '$env/static/private';
 //console.log('$env/dynamic/private', API_KEY);
 //let ee = API_KEY;
+
+let clientLink = OIDC_URL + '/api/client';
+
+
+
 export const load: PageServerLoad = async ({ fetch, depends, locals }) => {
 	if (!locals.user) {
 		throw redirect(302, '/');
@@ -55,9 +60,9 @@ export const actions = {
 			);
 			console.log({ result });
 
-			const clientLink = `http://localhost:8280/oauth/clients`;
+			//const clientLink = `http://localhost:8280/api/client/test`;
 
-			const res = await fetch(clientLink, {
+			const res = await fetch(clientLink+`/test`, {
 				method: 'POST',
 				body: JSON.stringify({
 					client_name: client_name,
@@ -92,11 +97,11 @@ export const actions = {
 		const formData = await request.formData();
 		const id = formData.get('id');
 		console.log(id);
-
-		await fetch(`http://localhost:8280/oauth/clients/${id}`, {
+		console.log("+++++++");
+		await fetch(clientLink+`/${id}`, {
 			method: 'DELETE',
 			body: JSON.stringify({
-				foo: ''
+				client_name: id
 			})
 		});
 	}

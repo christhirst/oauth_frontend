@@ -18,13 +18,13 @@ export const GET: RequestHandler = async ({ fetch, locals }) => {
 
 export const POST: RequestHandler = async ({ fetch, request, locals, params }) => {
 	console.log('testing');
-	console.log(params);
+	
 	const form = await request.formData();
-
+	console.log(form);
 	const response = await fetch(url + `/${params}`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'applicaton/json' },
-		body: JSON.stringify({})
+		body: JSON.stringify({form})
 	});
 	return response;
 };
