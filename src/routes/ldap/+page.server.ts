@@ -3,7 +3,7 @@ import { invalidateAll } from '$app/navigation';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { OIDC_URL } from '$env/static/private';
-const url = OIDC_URL + '/oauth';
+const url = OIDC_URL //+ '/oauth';
 
 export const load: PageServerLoad = async ({ fetch, depends, locals }) => {
 	if (!locals.user) {

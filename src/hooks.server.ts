@@ -2,7 +2,7 @@ import { Issuer, generators } from 'openid-client';
 import type { OpenIDCallbackChecks } from 'openid-client';
 
 import { redirect, type Handle } from '@sveltejs/kit';
-import { OIDC_URL, CLIENT_NAME, CLIENT_SECRET } from '$env/static/private';
+import { OIDC_URL, CLIENT_NAME, CLIENT_SECRET } from '$env/dynamic/private';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const urls = OIDC_URL + '/oauth/.well-known/openid-configuration';
