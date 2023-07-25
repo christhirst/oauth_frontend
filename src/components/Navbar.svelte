@@ -26,10 +26,10 @@
 			title: 'Mappings',
 			href: '/mappings'
 		},
-		/* {
+		 {
 			title: 'Sync',
 			href: '/sync'
-		}, */
+		}, 
 		/* 	{
 			title: 'User',
 			href: '/user'
